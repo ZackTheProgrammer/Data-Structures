@@ -1,0 +1,240 @@
+class llNode:
+
+    def __init__(self,data):
+        self.data = data
+        self._next = None
+    
+    def getData(self):
+        return self.data
+    
+    def getNext(self):
+        return self._next
+    
+    def _setNext(self,node):
+        self._next = node
+    
+    def setData(self,value):
+        self.data = value
+
+
+def getNext(node:llNode):
+        return node._next
+
+class linkedList:
+    
+    def __init__(self,head=None):
+        self.head = head
+    
+    def appendNode(self,val):
+        node = llNode(val)
+        if self.head is None:
+            self.head = node
+        else:
+            itr = self.head
+            while itr._next:
+                itr = itr._next
+            else:
+                itr._next = node
+    
+    def printll(self):
+        if self.head is None:
+            print(None)
+        else:
+            itr = self.head
+            while itr:
+                print(str(itr.data) + " -->", end=" ")
+                itr = itr._next
+            else:
+                print("None")
+    
+    def insertNode(self,val,index:int):
+        node = llNode(val)
+        if index == 0:
+            prev = self.head
+            self.head = node
+            self.head._next = prev
+        else:
+            count = 0
+            itr = self.head
+            while count != index - 1:
+                itr = itr._next
+                count += 1
+            else:
+                node._next = itr._next
+                itr._next = node
+    
+    def popll(self,index:int):
+        if index == 0:
+            self.head = self.head._next
+        else:
+            count = 0
+            itr = self.head
+            while count != index - 1:
+                itr = itr._next
+                count += 1
+            else:
+                itr._next = itr._next._next
+    
+    def removeNode(self,val):
+        itr = self.head
+        if itr.data is val:
+            self.head = self.head._next
+        else:
+            while itr._next.data != val:
+                itr = itr._next
+            else:
+                itr._next = itr._next._next
+    
+    def removeLastNode(self):
+        itr = self.head
+        while itr._next._next is not None:
+            itr = itr._next
+        else:
+            itr._next = None
+
+    def removeFirstNode(self):
+        self.head = self.head._next
+    
+    def lenll(self):
+        count = 0
+        itr = self.head
+        while itr:
+            itr = itr._next
+            count += 1
+        return count
+    
+    def getIndexOf(self,val):
+        itr = self.head
+        count = 0
+        while itr.data != val:
+            itr = itr._next
+            count += 1
+        else:
+            return count
+    
+    def getNodeAt(self,index:int):
+        itr = self.head
+        count = 0
+        while count != index:
+            itr = itr._next
+            count += 1
+        else:
+            return itr.data
+    
+    def getLastNode(self):
+        itr = self.head
+        while itr._next:
+            itr = itr._next
+        else:
+            return itr.data
+    
+    def getHead(self):
+        return self.head.data
+    
+    def extendll(self,ll):
+        if self is not ll:
+            itr = ll.head
+            while itr:
+                self.appendNode(itr.data)
+                itr = itr._next
+            return self
+        else:
+            itr = self.head
+            l = []
+            while itr:
+                l.append(itr.data)
+                itr = itr._next
+            self.appendNodes(l)
+            return self
+    
+    def insertAtBeginning(self,val):
+        self.insertNode(val,0)
+    
+    def appendNodes(self,l:list):
+        for i in range(len(l)):
+            self.appendNode(l[i])
+    
+    def reversell(self):
+        '''cur = self.head
+        prev = None
+        while cur is not None:
+            next = cur._next
+            cur._next = prev
+            prev = cur
+            cur = next
+        self.head = prev
+        return self'''
+        l = linkedList()
+        itr = self.head
+        while itr:
+            l.insertAtBeginning(itr.data)
+            itr = itr._next
+        return l
+    
+    def insertNodeAfter(self,val,af):
+        ind1 = self.getIndexOf(af)
+        self.insertNode(val,ind1+1)
+    
+    def insertNodeBefore(self,node,bf):
+        ind1 = self.getIndexOf(bf)
+        self.insertNode(node,ind1)
+    
+    def slicell(self,start,end):
+        itr = self.head
+        l = linkedList()
+        for i in range(start,end):
+            l.appendNode(self.getNodeAt(i))
+        return l
+    
+    def getNext(self,val):
+        return self.getNodeAt(self.getIndexOf(val)+1)
+    
+    def getMax(self):
+        itr = self.head
+        mx = self.head
+        while itr:
+            if itr.data > mx.data:
+                mx = itr
+            itr = itr._next
+        else:
+            return mx.data
+    
+    def getMin(self):
+        itr = self.head
+        mn = self.head
+        while itr:
+            if itr.data < mn.data:
+                mn = itr
+            itr = itr._next
+        else:
+            return mn.data
+    
+    def count(self,data):
+        num = 0
+        itr = self.head
+        while itr:
+            if itr.data is data:
+                num += 1
+            itr = itr._next
+        return num
+    
+    def toList(self):
+        ls = []
+        itr = self.head
+        while itr:
+            ls.append(itr.data)
+            itr = itr._next
+        return ls
+    
+    def sortll(self,eq,reverse=False):
+        ls = self.toList()
+        ls.sort(key=eq,reverse=reverse)
+        return ls
+    
+    def joinll(self):
+        string = ""
+        itr = self.head
+        while itr:
+            string += str(itr.data)
+            itr = itr._next
+        return string
